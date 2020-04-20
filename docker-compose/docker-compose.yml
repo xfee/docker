@@ -1,0 +1,50 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ~/workspace/docker/nginx:/etc/nginx:cached
+      - ~/workspace/wwwroot:/www/wwwroot:cached
+    networks:
+      dev: 
+        ipv4_address: 172.19.0.2
+
+
+  php:
+    image: registry.cn-qingdao.aliyuncs.com/xfee/php74:1.0
+    restart: always
+    depends_on: 
+      - nginx
+    volumes:
+      - ~/workspace/wwwroot:/www/wwwroot:cached
+    networks:
+        dev: 
+          ipv4_address: 172.19.0.10
+
+
+  mysql:
+    image: mysql:5.6
+    restart: always
+    depends_on: 
+      - php
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    # volumes:
+      # - ~/workspace/docker/mysql/conf:/etc/mysql  
+      # - ~/workspace/docker/mysql/data:/var/lib/mysql
+    networks:
+      dev: 
+        ipv4_address: 172.19.0.20
+
+
+networks:
+  dev:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.19.0.0/16
