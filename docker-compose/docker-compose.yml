@@ -7,7 +7,7 @@ services:
       - "80:80"
     volumes:
       - ~/workspace/docker/nginx:/etc/nginx:cached
-      - ~/workspace/wwwroot:/www/wwwroot:cached
+      - ~/workspace/wwwroot:/wwwroot:cached
       # - ~/workspace/docker/php74/sock:/sock:cached
     networks:
       dev: 
@@ -20,7 +20,7 @@ services:
     depends_on: 
       - nginx
     volumes:
-      - ~/workspace/wwwroot:/www/wwwroot:cached
+      - ~/workspace/wwwroot:/wwwroot:cached
       # - ~/workspace/docker/php74/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:cached
       # - ~/workspace/docker/php74/sock:/sock:cached
     networks:
