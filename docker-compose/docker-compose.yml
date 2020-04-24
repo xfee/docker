@@ -2,13 +2,14 @@ version: "3"
 services:
   nginx:
     image: nginx:latest
+    container_name: nginx
     restart: always
     ports:
       - "80:80"
     volumes:
-      - ~/workspace/docker/nginx:/etc/nginx:cached
+      - ../nginx/etc-nginx:/etc/nginx:cached
       - ~/workspace/wwwroot:/wwwroot:cached
-      # - ~/workspace/docker/php74/sock:/sock:cached
+      # - ../php74/sock:/sock:cached
     networks:
       dev: 
         ipv4_address: 172.19.0.2
@@ -16,13 +17,14 @@ services:
 
   php:
     image: registry.cn-qingdao.aliyuncs.com/xfee/php74:1.0
+    container_name: php74
     restart: always
     depends_on: 
       - nginx
     volumes:
       - ~/workspace/wwwroot:/wwwroot:cached
-      # - ~/workspace/docker/php74/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:cached
-      # - ~/workspace/docker/php74/sock:/sock:cached
+      # - ../php74/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:cached
+      # - ../php74/sock:/sock:cached
     networks:
         dev: 
           ipv4_address: 172.19.0.10
@@ -30,6 +32,7 @@ services:
 
   mysql:
     image: mysql:5.6
+    container_name: mysql56
     restart: always
     depends_on: 
       - php
@@ -37,13 +40,12 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
     ports:
       - "3306:3306"
-    # volumes:
-      # - ~/workspace/docker/mysql/conf:/etc/mysql  
-      # - ~/workspace/docker/mysql/data:/var/lib/mysql
+    volumes:
+      - ../mysql/etc-mysql:/etc/mysql  
+      - ../mysql/var-lib-mysql:/var/lib/mysql
     networks:
       dev: 
         ipv4_address: 172.19.0.20
-
 
 networks:
   dev:
