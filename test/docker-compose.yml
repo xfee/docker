@@ -1,0 +1,7 @@
+version: "3"
+services:
+  php:
+    image: registry.cn-qingdao.aliyuncs.com/xfee/php74:1.0
+    container_name: php73
+    volumes:
+      - ~/workspace/wwwroot:/wwwroot:cached
